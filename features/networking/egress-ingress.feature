@@ -4,7 +4,7 @@ Feature: Egress-ingress related networking scenarios
   # @case_id OCP-11639
   @admin
   @destructive
-  @4.7 @4.10 @4.9
+  @4.8 @4.7 @4.10 @4.9
   @vsphere-ipi @openstack-ipi @gcp-ipi @baremetal-ipi @azure-ipi @aws-ipi
   @vsphere-upi @openstack-upi @gcp-upi @azure-upi @aws-upi
   @upgrade-sanity
@@ -46,7 +46,7 @@ Feature: Egress-ingress related networking scenarios
   # @author weliang@redhat.com
   # @case_id OCP-13502
   @admin
-  @4.7 @4.10 @4.9
+  @4.8 @4.7 @4.10 @4.9
   @vsphere-ipi @openstack-ipi @gcp-ipi @baremetal-ipi @azure-ipi @aws-ipi
   @vsphere-upi @openstack-upi @gcp-upi @azure-upi @aws-upi
   @upgrade-sanity
@@ -113,7 +113,7 @@ Feature: Egress-ingress related networking scenarios
   # @author weliang@redhat.com
   # @case_id OCP-13507
   @admin
-  @4.7 @4.10 @4.9
+  @4.8 @4.7 @4.10 @4.9
   @vsphere-ipi @openstack-ipi @gcp-ipi @baremetal-ipi @azure-ipi @aws-ipi
   @vsphere-upi @openstack-upi @gcp-upi @azure-upi @aws-upi
   @upgrade-sanity
@@ -156,7 +156,7 @@ Feature: Egress-ingress related networking scenarios
   # @author weliang@redhat.com
   # @case_id OCP-13509
   @admin
-  @4.7 @4.10 @4.9
+  @4.8 @4.7 @4.10 @4.9
   @vsphere-ipi @openstack-ipi @gcp-ipi @baremetal-ipi @azure-ipi @aws-ipi
   @vsphere-upi @openstack-upi @gcp-upi @azure-upi @aws-upi
   @upgrade-sanity
@@ -189,7 +189,7 @@ Feature: Egress-ingress related networking scenarios
   # @author weliang@redhat.com
   # @case_id OCP-15005
   @admin
-  @4.7 @4.10 @4.9
+  @4.8 @4.7 @4.10 @4.9
   @vsphere-ipi @openstack-ipi @gcp-ipi @baremetal-ipi @azure-ipi @aws-ipi
   @vsphere-upi @openstack-upi @gcp-upi @azure-upi @aws-upi
   @upgrade-sanity
@@ -248,7 +248,7 @@ Feature: Egress-ingress related networking scenarios
   # @author weliang@redhat.com
   # @case_id OCP-15017
   @admin
-  @4.7 @4.10 @4.9
+  @4.8 @4.7 @4.10 @4.9
   @vsphere-ipi @openstack-ipi @gcp-ipi @baremetal-ipi @azure-ipi @aws-ipi
   @vsphere-upi @openstack-upi @gcp-upi @azure-upi @aws-upi
   @upgrade-sanity
@@ -389,7 +389,7 @@ Feature: Egress-ingress related networking scenarios
   # @author huirwang@redhat.com
   # @case_id OCP-33530
   @admin
-  @4.7 @4.10 @4.9
+  @4.8 @4.7 @4.10 @4.9
   @vsphere-ipi @openstack-ipi @gcp-ipi @baremetal-ipi @azure-ipi @aws-ipi
   @vsphere-upi @openstack-upi @gcp-upi @azure-upi @aws-upi
   @upgrade-sanity
@@ -427,7 +427,7 @@ Feature: Egress-ingress related networking scenarios
   # @author huirwang@redhat.com
   # @case_id OCP-33531
   @admin
-  @4.7 @4.10 @4.9
+  @4.8 @4.7 @4.10 @4.9
   @vsphere-ipi @openstack-ipi @gcp-ipi @baremetal-ipi @azure-ipi @aws-ipi
   @vsphere-upi @openstack-upi @gcp-upi @azure-upi @aws-upi
   @upgrade-sanity
@@ -538,7 +538,7 @@ Feature: Egress-ingress related networking scenarios
   # @author huirwang@redhat.com
   # @case_id OCP-37491
   @admin
-  @4.7 @4.10 @4.9
+  @4.8 @4.7 @4.10 @4.9
   @vsphere-ipi @openstack-ipi @gcp-ipi @baremetal-ipi @azure-ipi @aws-ipi
   @vsphere-upi @openstack-upi @gcp-upi @azure-upi @aws-upi
   @upgrade-sanity
@@ -571,7 +571,7 @@ Feature: Egress-ingress related networking scenarios
   # @author huirwang@redhat.com
   # @case_id OCP-37495
   @admin
-  @4.7 @4.10 @4.9
+  @4.8 @4.7 @4.10 @4.9
   @vsphere-ipi @openstack-ipi @gcp-ipi @baremetal-ipi @azure-ipi @aws-ipi
   @vsphere-upi @openstack-upi @gcp-upi @azure-upi @aws-upi
   @upgrade-sanity
@@ -639,9 +639,10 @@ Feature: Egress-ingress related networking scenarios
   # @author huirwang@redhat.com
   # @case_id OCP-41179
   @admin
-  @4.10 @4.9
+  @4.8 @4.10 @4.9
   @vsphere-ipi @openstack-ipi @gcp-ipi @baremetal-ipi @azure-ipi @aws-ipi
   @vsphere-upi @openstack-upi @gcp-upi @azure-upi @aws-upi
+  @upgrade-sanity
   Scenario: [bug1947917] Egress Firewall should reliably apply firewall rules
     Given I have a project
     Given I have a pod-for-ping in the project
@@ -672,3 +673,58 @@ Feature: Egress-ingress related networking scenarios
     When I execute on the pod:
       | curl | --connect-timeout | 5 | --head | www.chsi.com.cn |
     Then the step should fail
+
+
+  # @author jechen@redhat.com
+  # @case_id OCP-44940
+  @admin
+  @4.10 @4.9    
+  @network-ovnkubernetes	
+  Scenario: [bug2000057] No segmentation error occurs in ovnkube-master after egressfirewall resource that references a DNS name is deleted
+    Given the env is using "OVNKubernetes" networkType
+    And I have a project
+    Given I obtain test data file "networking/list_for_pods.json"
+    When I run the :create client command with:
+      | f | list_for_pods.json |
+    Then the step should succeed
+		
+    When I obtain test data file "networking/ovn-egressfirewall/egressfirewall-policy4.yaml"
+    And I run oc create as admin over "egressfirewall-policy4.yaml" replacing paths:
+      | ["metadata"]["namespace"]  | <%= project.name %>   |
+    Then the step should succeed
+
+    And I wait up to 60 seconds for the steps to pass:
+    """
+    When I run the :get admin command with:
+      | resource      | egressfirewall                 |
+      | resource_name | default                        |
+      | o             | jsonpath={.status}             |
+      | n             | <%= project.name %>            |
+    Then the step should succeed
+    And the output should contain:
+      | EgressFirewall Rules applied |
+    """
+
+    When I run the :delete admin command with:
+      | object_type       | egressfirewall           |
+      | object_name_or_id | default                  |
+      | n                 | <%= project.name %>      |
+    Then the step should succeed
+    
+    Given I switch to cluster admin pseudo user
+    Given admin uses the "openshift-ovn-kubernetes" project
+    Given I store the leader node name from the "ovn-kubernetes-master" configmap to the :leadernode clipboard
+    When I run the :get admin command with:
+      | resource      | pod                                 |     
+      | l             | app=ovnkube-master                  |
+      | fieldSelector | spec.nodeName=<%= cb.leadernode %>  |
+      | o             | jsonpath={.items[*].metadata.name}  |
+    Then the step should succeed
+    And evaluation of `@result[:response]` is stored in the :ovnkube_master_podname clipboard
+
+    When I run the :logs client command with:
+      | resource_name | <%= cb.ovnkube_master_podname %> |
+      | c             | ovnkube-master                   |
+      | since         | 30s                              |
+    Then the step should succeed
+    And the output should not contain "SIGSEGV: segmentation violation"

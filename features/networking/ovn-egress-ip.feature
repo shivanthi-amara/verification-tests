@@ -4,7 +4,7 @@ Feature: OVN Egress IP related features
   # @case_id OCP-33618
   @admin
   @destructive
-  @4.7 @4.10 @4.9
+  @4.8 @4.7 @4.10 @4.9
   @vsphere-ipi
   @vsphere-upi
   @upgrade-sanity
@@ -71,7 +71,7 @@ Feature: OVN Egress IP related features
   # @case_id OCP-33723
   @admin
   @destructive
-  @4.7 @4.10 @4.9
+  @4.8 @4.7 @4.10 @4.9
   @vsphere-ipi
   @vsphere-upi
   @upgrade-sanity
@@ -141,7 +141,7 @@ Feature: OVN Egress IP related features
   # @case_id OCP-33641
   @admin
   @destructive
-  @4.7 @4.10 @4.9
+  @4.8 @4.7 @4.10 @4.9
   @vsphere-ipi
   @vsphere-upi
   @upgrade-sanity
@@ -326,7 +326,7 @@ Feature: OVN Egress IP related features
   # @case_id OCP-33631
   @admin
   @destructive
-  @4.7 @4.10 @4.9
+  @4.8 @4.7 @4.10 @4.9
   @vsphere-ipi
   @vsphere-upi
   @upgrade-sanity
@@ -436,9 +436,10 @@ Feature: OVN Egress IP related features
   # @case_id OCP-34938
   @admin
   @destructive
+  @network-ovnkubernetes
   @4.10 @4.9
   @vsphere-ipi @aws-ipi
-  @aws-upi @vsphere-upi
+  @vsphere-upi @aws-upi
   Scenario: Warning event will be triggered if apply EgressIP object but no EgressIP nodes
     #Get unused IP as egress ip
     Given I store a random unused IP address from the reserved range to the clipboard
@@ -631,6 +632,7 @@ Feature: OVN Egress IP related features
   # @case_id OCP-33719
   @admin
   @destructive
+  @network-ovnkubernetes
   @4.10 @4.9
   @aws-ipi
   @aws-upi

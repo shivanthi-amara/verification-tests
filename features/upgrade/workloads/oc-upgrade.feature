@@ -50,7 +50,7 @@ Feature: basic verification for upgrade oc client testing
   # @author yinzhou@redhat.com
   @upgrade-prepare
   @users=upuser1,upuser2
-  @4.10 @4.9
+  @4.8 @4.10 @4.9
   @azure-ipi @openstack-ipi @baremetal-ipi @vsphere-ipi @gcp-ipi @aws-ipi
   @azure-upi @aws-upi @openstack-upi @vsphere-upi @gcp-upi
   Scenario: Check some container related oc commands still work for ocp45 after upgrade - prepare
@@ -67,7 +67,7 @@ Feature: basic verification for upgrade oc client testing
   @upgrade-check
   @admin
   @users=upuser1,upuser2
-  @4.10 @4.9
+  @4.8 @4.10 @4.9
   @azure-ipi @openstack-ipi @baremetal-ipi @vsphere-ipi @gcp-ipi @aws-ipi
   @azure-upi @aws-upi @openstack-upi @vsphere-upi @gcp-upi
   Scenario: Check some container related oc commands still work for ocp45 after upgrade
@@ -89,7 +89,7 @@ Feature: basic verification for upgrade oc client testing
     And evaluation of `rand(5000..7999)` is stored in the :port1 clipboard
     When I run the :port_forward background client command with:
       | pod       | <%= pod.name %>        |
-      | port_spec | <%= cb[:port1] %>:8888 |
+      | port_spec | <%= cb[:port1] %>:8081 |
       | _timeout  | 100                    |
     Then the step should succeed
     Given I wait up to 30 seconds for the steps to pass:
