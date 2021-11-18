@@ -1,10 +1,11 @@
 Feature: Volume snapshot test
 
   # @author wduan@redhat.com
+  @inactive
   @admin
   @4.8 @4.7 @4.10 @4.9
   Scenario Outline: Volume snapshot create and restore test
-    Given I have a project  
+    Given I have a project
     Given I obtain test data file "storage/misc/pvc.json"
     When I create a dynamic pvc from "pvc.json" replacing paths:
       | ["metadata"]["name"]         | mypvc-ori |
@@ -25,13 +26,13 @@ Feature: Volume snapshot test
     Then the step should succeed
     Given I ensure "mypod-ori" pod is deleted
 
-    Given admin creates a VolumeSnapshotClass replacing paths:
-      | ["metadata"]["name"] | snapclass-<%= project.name %> |
+    #Given admin creates a VolumeSnapshotClass replacing paths:
+    #  | ["metadata"]["name"] | snapclass-<%= project.name %> |
     Given I obtain test data file "storage/csi/volumesnapshot_v1.yaml"
     When I run oc create over "volumesnapshot_v1.yaml" replacing paths:
-      | ["metadata"]["name"]                            | mysnapshot                    |
-      | ["spec"]["volumeSnapshotClassName"]             | snapclass-<%= project.name %> |
-      | ["spec"]["source"]["persistentVolumeClaimName"] | mypvc-ori                     |
+      | ["metadata"]["name"]                            | mysnapshot |
+      | ["spec"]["volumeSnapshotClassName"]             | <csi-vsc>  |
+      | ["spec"]["source"]["persistentVolumeClaimName"] | mypvc-ori  |
     Then the step should succeed
     And the "mysnapshot" volumesnapshot becomes ready
     Given I obtain test data file "storage/csi/pvc-snapshot.yaml"
@@ -47,32 +48,34 @@ Feature: Volume snapshot test
       | ["spec"]["containers"][0]["volumeMounts"][0]["mountPath"]    | /mnt/local |
     Then the step should succeed
     Given the pod named "mypod-snap" becomes ready
-    And the "mypvc-snap" PVC becomes :bound 
+    And the "mypvc-snap" PVC becomes :bound
     When I execute on the "mypod-snap" pod:
       | sh | -c | more /mnt/local/testfile |
     Then the step should succeed
     And the output should contain "snapshot test"
-    
+
     @aws-ipi
     @aws-upi
     Examples:
-      | csi-sc       |
-      | gp2-csi      | # @case_id OCP-27727
+      | csi-sc  | csi-vsc     |
+      | gp2-csi | csi-aws-vsc | # @case_id OCP-27727
 
     @azure-ipi
     @azure-upi
     Examples:
-      | csi-sc       |
-      | managed-csi  | # @case_id OCP-41449
+      | csi-sc      | csi-vsc           |
+      | managed-csi | csi-azuredisk-vsc | # @case_id OCP-41449
 
     @openstack-ipi
     @openstack-upi
     @upgrade-sanity
     Examples:
-      | csi-sc       |
-      | standard-csi | # @case_id OCP-37568
+      | csi-sc       | csi-vsc      |
+      | standard-csi | standard-csi |# @case_id OCP-37568
 
   # @author wduan@redhat.com
+  @admin
+  @inactive
   @admin
   @4.8 @4.7 @4.10 @4.9
   Scenario Outline: Volume snapshot create and restore test with block
@@ -103,13 +106,13 @@ Feature: Volume snapshot test
     Then the step should succeed
     Given I ensure "mypod-ori" pod is deleted
 
-    Given admin creates a VolumeSnapshotClass replacing paths:
-      | ["metadata"]["name"] | snapclass-<%= project.name %> |
+    #Given admin creates a VolumeSnapshotClass replacing paths:
+    #  | ["metadata"]["name"] | snapclass-<%= project.name %> |
     Given I obtain test data file "storage/csi/volumesnapshot_v1.yaml"
     When I run oc create over "volumesnapshot_v1.yaml" replacing paths:
-      | ["metadata"]["name"]                            | mysnapshot                    |
-      | ["spec"]["volumeSnapshotClassName"]             | snapclass-<%= project.name %> |
-      | ["spec"]["source"]["persistentVolumeClaimName"] | mypvc-ori                     |
+      | ["metadata"]["name"]                            | mysnapshot |
+      | ["spec"]["volumeSnapshotClassName"]             | <csi-vsc>  |
+      | ["spec"]["source"]["persistentVolumeClaimName"] | mypvc-ori  |
     Then the step should succeed
     And the "mysnapshot" volumesnapshot becomes ready
     Given I obtain test data file "storage/csi/pvc-snapshot.yaml"
@@ -138,5 +141,5 @@ Feature: Volume snapshot test
     @openstack-upi
     @upgrade-sanity
     Examples:
-      | csi-sc       |
-      | standard-csi | # @case_id OCP-37569
+      | csi-sc       | csi-vsc      |
+      | standard-csi | standard-csi | # @case_id OCP-37569

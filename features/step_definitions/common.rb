@@ -130,6 +130,14 @@ Given /^evaluation of `(.+?)` is stored in the#{OPT_SYM} clipboard$/ do |what, c
   cb[clipboard_name] = eval(what)
 end
 
+Given /^I save custom resource `(.+?)` to file>(.+)$/ do |what,filepath|
+  ensure_admin_tagged
+
+  resource = eval(what)
+  txt = resource.raw_resource(quiet: true).to_yaml
+  File.write(File.expand_path(filepath.strip), txt)
+end
+
 Then /^(?:the )?expression should be true> (.+)$/ do |expr|
   res = eval expr
   eval_details = ""
@@ -141,11 +149,15 @@ Then /^(?:the )?expression should be true> (.+)$/ do |expr|
       comparison_operators = /===|==|>=|<=|!=|>|<|&&|\|\|&|\|/
       op = expr.scan(comparison_operators).first
       if op
-        e1, e2 = expr.split(op)
+        expr_left, expr_right = expr.split(op)
         # XXX: we may not catch everything, wrap it around begin/rescue and print
         # out blank if some complex comparison is in the expression.
         begin
-          eval_details = "\nleft_operand: #{eval(e1)}, right_operand: #{eval(e2)}\n"
+          if ['cred','key','passw','secret','token'].any? { |cred| expr_left.downcase.include?(cred) || expr_right.downcase.include?(cred) }
+            logger.warn("Should not print credential info in logs")
+          else
+            eval_details = "\nleft_operand: #{eval(expr_left)}, \nright_operand: #{eval(expt_right)}\n"
+          end
         rescue
           logger.info("Unable to interpret the expression...")
         end
@@ -153,7 +165,7 @@ Then /^(?:the )?expression should be true> (.+)$/ do |expr|
     else
       logger.info("singular expression detected skipping left & right operand eval() ...")
     end
-    raise "expression \"#{expr}\" returned non-positive status: #{res}" + eval_details
+    raise "expression returned non-positive status: #{res}" + eval_details
   end
 end
 
