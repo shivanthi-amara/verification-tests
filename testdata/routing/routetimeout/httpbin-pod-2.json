@@ -11,7 +11,7 @@
   "spec": {
       "containers": [{
         "name": "httpbin-pod",
-        "image": "quay.io/openshifttest/httpbin:multiarch@sha256:1ed2943b4723a3ec0e3ff8f511bdba846bf4f4fdab8a1a8f57ee931ee94cbc08",
+        "image": "quay.io/openshifttest/httpbin:multiarch@sha256:35b02b831b57145019a3245a902f31b2e7310e9bda906dd9824f45ce305543ec",
         "ports": [
           {
             "containerPort": 8080

@@ -10,7 +10,7 @@
   "spec": {
       "containers": [{
         "name": "httpbin-http",
-        "image": "quay.io/openshifttest/httpbin:multiarch@sha256:1ed2943b4723a3ec0e3ff8f511bdba846bf4f4fdab8a1a8f57ee931ee94cbc08",
+        "image": "quay.io/openshifttest/httpbin:multiarch@sha256:35b02b831b57145019a3245a902f31b2e7310e9bda906dd9824f45ce305543ec",
         "ports": [
           {
             "containerPort": 8080
@@ -19,7 +19,7 @@
       },
       {
         "name": "httpbin-https",
-        "image": "quay.io/openshifttest/httpbin:multiarch-ssl@sha256:63ec46677d5a76c002af311d7eb45e1683eb014c574c9c8c2e0cc6cea80d8e24",
+        "image": "quay.io/openshifttest/httpbin:multiarch-ssl@sha256:4b92413011bcefcc62171230da5b5eba71946d82fc2bc3ce89539547f627a4b7",
         "ports": [
           {
             "containerPort": 8443
